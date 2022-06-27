@@ -1,0 +1,50 @@
+:root {
+    --main-bg: rgb(41, 41, 41);
+    --top-menu-bg: rgb(54, 0, 54);
+    --hover-bg: rgb(110, 69, 110);
+    --hover-color: purple;
+  }
+  
+  .block {
+    display:block;
+  }
+  
+  .search-center-div {
+    display: table;
+    width: 55%;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+  
+  .search-label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .search-group {
+    float: left;
+    margin-right: 20px;
+  }
+  
+  .search-group-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .add-button {
+    position: absolute;
+    bottom: 1;
+    right: 0;
+  }
+  
+  .search-results {
+    text-align: left;
+    display: table;
+    width: 70%;
+    margin: 0 auto;
+  }

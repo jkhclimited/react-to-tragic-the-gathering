@@ -1,0 +1,30 @@
+:root {
+    --main-bg: rgb(41, 41, 41);
+    --top-menu-bg: rgb(54, 0, 54);
+    --hover-bg: rgb(110, 69, 110);
+    --hover-color: purple;
+}
+
+.header-bar {
+    background-color: var(--top-menu-bg);
+    color: white;
+    display: flex;
+    align-items: center;
+}
+  
+.header-bar a:hover {
+    background-color: var(--hover-bg);
+    color: white;
+}
+  
+.header-bar a {
+    line-height: 3rem;
+    padding: 0 1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+}
+  
+.header-bar a:last-child {
+    margin-left: auto;
+}

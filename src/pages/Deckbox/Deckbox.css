@@ -1,0 +1,45 @@
+
+td a {
+    text-decoration: none;
+    color: white;
+}
+
+td a:hover{
+    color: var(--hover-color);
+}
+
+.container {
+    display: table;
+    width: 95%;
+    font-size: 12px;
+}
+
+table, .row, .text-row {
+    display: table-row;
+    width: 95%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.row {
+    font-weight: bold;
+    text-align: left;
+}
+
+.flex {
+    display: table-cell;
+}
+
+.table-header-bottom {
+    border-bottom: solid black 2px;
+    border-top: solid black 2px;
+}
+
+.table-header-right {
+    border-right: solid black 2px;
+}
+
+.table-header-left {
+    border-left: solid black 2px;
+}
+  

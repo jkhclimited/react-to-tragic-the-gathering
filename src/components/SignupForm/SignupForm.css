@@ -1,0 +1,31 @@
+.signup-container {
+    background-color: #FFF;
+    height: 600px;
+    width: 400px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0px;
+    text-align:center;
+}
+
+.signup-label {
+    font-size: 18px;
+    color: #333;
+    height: 20px;
+    width: 50px;
+    margin-top: 10px;
+    margin-left: 10px;
+    text-align: left;
+    margin-right:15px;
+    float:left;
+}
+
+.signup-input {
+    height: 20px;
+    width: 250px;
+    border: 1px solid #000;
+    margin-top: 10px;
+}

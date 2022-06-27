@@ -1,0 +1,17 @@
+:root {
+    --main-bg: rgb(41, 41, 41);
+    --top-menu-bg: rgb(54, 0, 54);
+    --hover-bg: rgb(110, 69, 110);
+    --hover-color: purple;
+}
+
+.center-div {
+    display: table;
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.text-center {
+    text-align: center;
+}
