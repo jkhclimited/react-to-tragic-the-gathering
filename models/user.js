@@ -16,7 +16,8 @@ const userSchema = new Schema({
     minLength: 3,
     required: true
   },
-  cards: [{type: Schema.Types.ObjectId, ref: 'Card'}],
+  // cards: [{type: Schema.Types.ObjectId, ref: 'Card'}],
+  cards: [{card: {type: Schema.Types.ObjectId, ref: 'Card'}, quantity: {type: Number}}],
   decks: [{type: Schema.Types.ObjectId, ref: 'Deck'}],
 }, {
   timestamps: true,

@@ -11,8 +11,8 @@ const deckSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  cards: [{type: Schema.Types.ObjectId, ref: 'Card'}],
-  // cards: [{card: {type: Schema.Types.ObjectId, ref: 'Card'}, quantity: {type: Number}}],
+  // cards: [{type: Schema.Types.ObjectId, ref: 'Card'}],
+  cards: [{card: {type: Schema.Types.ObjectId, ref: 'Card'}, quantity: {type: Number}}],
 }, { timestamps: true }
 );
 

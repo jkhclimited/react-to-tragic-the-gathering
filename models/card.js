@@ -8,10 +8,6 @@ const cardSchema = new mongoose.Schema({
   power: String,      // power
   toughness: String,  // toughness
   oracle_text: String,// oracle_text
-  quantity: {
-    type: Number,     // n/a
-    default: 1,
-  },
   nonfoil: Boolean,   // nonfoil
   foil: Boolean,      // foil
   copiesInDeck: {

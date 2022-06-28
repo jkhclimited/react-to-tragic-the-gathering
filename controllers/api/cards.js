@@ -1,5 +1,6 @@
 const Card = require('../../models/Card');
 const User = require('../../models/User');
+const ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
     index,
@@ -21,9 +22,10 @@ async function getOne(req, res) {
 
 async function index(req, res) {
     try {
-        let cards = await User.findById(req.user._id).populate({path: 'cards', options: {sort: {name: 1}}}).exec();
+        let cards = await User.findById(req.user._id).populate('cards.card').exec();
         res.status(200).json(cards.cards);
     } catch (err) {
+        console.log(err);
         res.status(400).json(err);
     }
 }
@@ -33,38 +35,32 @@ async function create(req, res) {
         const cardCache = req.body.card;
         let query = { set: cardCache.set , collector_number: cardCache.collector_number, name: cardCache.name };
         Card.findOne(query, function(err, found) {
-            if (found === null) {
+            if (found === null) { // The card was not found
                 Card.create(cardCache, function(err, card){
                     card.image_link = cardCache.image_uris.normal;
                     card.save();
                     User.findById(req.user._id).exec(function(err, user){
-                        user.cards.push(card);
+                        user.cards.push({card: card, quantity: 1});
                         user.save();
                         console.log("New card item created");
                     });
                 });
             } else { // The card is found
-                User.findById(req.user._id).populate('cards').exec(function(err, user){ // Find the user and populate
+                User.findById(req.user._id).populate('cards.card').exec(function(err, user){ // Find the user and populate
                     let needNew = true;
                     user.cards.forEach(function(err, idx){
                         let card = user.cards[idx];
-                        if (card.set === cardCache.set && card.collector_number === cardCache.collector_number && card.name === cardCache.name){
+                        if (card.card.set === cardCache.set && card.card.collector_number === cardCache.collector_number && card.card.name === cardCache.name){
                             card.quantity++;
-                            card.save();
+                            user.save();
                             needNew = false;
-                            console.log("Dupe counted");
+                            console.log("Duplicate counted");
                         };
                     });
                     if (needNew) {
-                        Card.create(cardCache, function(err, card){
-                            card.image_link = cardCache.image_uris.normal;
-                            card.save();
-                            User.findById(req.user._id).exec(function(err, user){
-                                user.cards.push(card);
-                                user.save();
-                                console.log("New to user card created");
-                            });
-                        });
+                        user.cards.push({card: found, quantity: 1});
+                        user.save();
+                        console.log("New to user card added");
                     };
                 });
             };
@@ -77,26 +73,34 @@ async function create(req, res) {
 
 async function deleteOne(req, res) {
     try {
-        Card.findByIdAndDelete(req.params.id, (err, card) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("Deleted " + card._id);
+        User.updateOne({ _id: ObjectId(req.user._id) }, 
+            { $pull: 
+                { cards: { _id: ObjectId(req.params.id) } }
+            }, function(err, user) {
+                if (err !== null){
+                    console.log(err);
+                }
             }
-        });
+        );
         res.sendStatus(200);
     } catch (err) {
+        console.log(err);
         res.sendStatus(400);
     }
 }
 
 function updateOne(req, res) {
     try {
-        Card.findById(req.body.cardId, (err, card) => {
-            card.quantity = req.body.quantity;
-            card.save();
-            console.log(card);
-        });
+        User.findById(req.user._id).populate('cards.card').exec(function(err, user){
+            user.cards.forEach(function(err, idx){
+                let card = user.cards[idx];
+                if (card._id.toString() === req.body.cardId){
+                    card.quantity = req.body.quantity;
+                    user.save();
+                    console.log("Successfully updated quantity.");
+                };
+            })
+        })
         res.sendStatus(201);
     } catch (err) {
         res.sendStatus(400);

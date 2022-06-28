@@ -14,10 +14,10 @@ class Deckbox extends React.Component {
         let cardID = this.state.cardID;
         let card = (this.state.cards).find(i => i._id === cardID);
         let thisCard = document.getElementById(cardID);
-        if (thisCard.innerHTML === `${card.name}`) {
-            thisCard.innerHTML = `${card.name}<br/><img src=${card.image_link} alt="${card.name} from ${card.set_name}"></img>`;
+        if (thisCard.innerHTML === `${card.card.name}`) {
+            thisCard.innerHTML = `${card.card.name}<br/><img src=${card.card.image_link} alt="${card.card.name} from ${card.card.set_name}"></img>`;
         } else {
-            thisCard.innerHTML = `${card.name}`;
+            thisCard.innerHTML = `${card.card.name}`;
         }
     };
 
@@ -31,6 +31,7 @@ class Deckbox extends React.Component {
                 }
             }).then(res => res.json());
             this.setState({ cards: cardList });
+            console.log(cardList);
         } catch (err) {
             console.error("Error:", err);
         }
@@ -42,9 +43,9 @@ class Deckbox extends React.Component {
 
     handleDelete = async (e) => {
         e.preventDefault();
+        console.log(e.currentTarget.id);
         try {
             const jwt = localStorage.getItem('token')
-            await this.setState({cardID: e.currentTarget.id})
             let options = {
                 method: "DELETE",
                 headers: {
@@ -52,7 +53,7 @@ class Deckbox extends React.Component {
                     'Authorization': 'Bearer ' + jwt
                 },
             };
-            await fetch(`/api/cards/${this.state.cardID}`, options)
+            await fetch(`/api/cards/${e.currentTarget.id}`, options)
             .then(res => {
                 if (res.status === 200) {
                     this.getCards();
@@ -110,8 +111,8 @@ class Deckbox extends React.Component {
                     {this.state.cards.length ? 
                         this.state.cards.map(card => (
                             <div className="text-row">
-                                <p className="flex" id={card._id} onClick={this.displayUnder}>{card.name}</p>
-                                <select id={card._id} name="quantity" className="flex" defaultValue={card.quantity} onChange={this.handleQuantitySelect}>
+                                <p className="flex" id={card._id} onClick={this.displayUnder}>{card.card.name}</p>
+                                <select id={card._id} name="quantity" className="flex" value={card.quantity} onChange={this.handleQuantitySelect}>
                                     <option value='1'>1</option>
                                     <option value='2'>2</option>
                                     <option value='3'>3</option>
@@ -133,10 +134,10 @@ class Deckbox extends React.Component {
                                     <option value='19'>19</option>
                                     <option value='20'>20</option>
                                 </select>                                    
-                                <p className="flex">{card.set_name}</p>
-                                <p className="flex">{card.collector_number}</p>
-                                <p className="flex">{card.type_line}</p>
-                                <p className="flex">{card.nonfoil ? "No" : "Yes"}</p>
+                                <p className="flex">{card.card.set_name}</p>
+                                <p className="flex">{card.card.collector_number}</p>
+                                <p className="flex">{card.card.type_line}</p>
+                                <p className="flex">{card.card.nonfoil ? "No" : "Yes"}</p>
                                 <a href={`/cards/${card._id}`} className='' id={card._id}>Switch Version</a>
                                 <p className="flex">
                                     <button id={card._id} className="delete-button" type="submit" onClick={this.handleDelete}>X</button>

@@ -3,6 +3,10 @@ import { getCardData } from '../../services/scryfall-api';
 import './CardSearch.css';
 
 class CardSearch extends React.Component {
+    constructor(props){
+       super(props); 
+    }
+
     state = {
         name: "",
         set: "",
@@ -43,7 +47,6 @@ class CardSearch extends React.Component {
                 await fetch('/api/cards', options)
                 .then(res => {
                     if (res.status === 400) {
-                        this.props.getCards();
                         console.error("Error code " + res.status + ": " + res.json());
                     } else {
                         this.props.getCards();

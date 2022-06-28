@@ -48,13 +48,13 @@ class App extends Component {
               <Route path='/home' element={<FrontPage />}/>
               <Route path='/cards' element={<Deckbox />}/>
               <Route path='/decks' element={<Deck />}/>              
-              <Route path='*' element={<Navigate to='/home' replace />}/>
+              {/* <Route path='*' element={<Navigate to='/home' replace />}/> */}
             </Routes>
             : 
             <Routes>
               <Route path='/home' element={<FrontPage />}/>
               <Route path='/authenticate' element={<AuthPage setUserInState={this.setUserInState} />}/>
-              {/* <Route path='*' element={<Navigate to='/home' replace />} /> */}
+              <Route path='*' element={<Navigate to='/home' replace />} />
             </Routes>             
           }
         </div>
