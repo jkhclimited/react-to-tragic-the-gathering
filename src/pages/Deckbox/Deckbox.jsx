@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import CardSearch from "../../components/CardSearch/CardSearch";
 import '../Deckbox/Deckbox.css';
 
@@ -31,7 +32,6 @@ class Deckbox extends React.Component {
                 }
             }).then(res => res.json());
             this.setState({ cards: cardList });
-            console.log(cardList);
         } catch (err) {
             console.error("Error:", err);
         }
@@ -138,7 +138,7 @@ class Deckbox extends React.Component {
                                 <p className="flex">{card.card.collector_number}</p>
                                 <p className="flex">{card.card.type_line}</p>
                                 <p className="flex">{card.card.nonfoil ? "No" : "Yes"}</p>
-                                <a href={`/cards/${card._id}`} className='' id={card._id}>Switch Version</a>
+                                <Link to={`/cards/${card.card._id}`} id={card.card._id}>Switch Version</Link>
                                 <p className="flex">
                                     <button id={card._id} className="delete-button" type="submit" onClick={this.handleDelete}>X</button>
                                 </p>

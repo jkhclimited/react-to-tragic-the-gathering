@@ -1,0 +1,6 @@
+.print-select-container {
+    display: table;
+    margin: 0 auto;
+    width: 70%;
+    font-size: 16px;
+}

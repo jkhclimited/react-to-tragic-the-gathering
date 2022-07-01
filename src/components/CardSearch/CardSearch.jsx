@@ -63,7 +63,7 @@ class CardSearch extends React.Component {
                 })
             }
         } catch (err) {
-            console.error("Error:", err);
+            console.error("Error: ", err);
         }
     }
 

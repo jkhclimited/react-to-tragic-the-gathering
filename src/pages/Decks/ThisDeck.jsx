@@ -7,14 +7,13 @@ export const ThisDeck = () => {
         deck: "",
         deckID: "",
         cards: [],
-        fetched: false,
     })
 
     const { id: deckId } = useParams();
 
     useEffect(() => {
         getCards();
-    }, [])
+    }, []);
 
     const getCards = async () => {
         try {

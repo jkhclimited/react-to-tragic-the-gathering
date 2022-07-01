@@ -23,7 +23,7 @@ const cardSchema = new mongoose.Schema({
   set_name: String,   // set_name
   collector_number: String, // collector_number
   rarity: String,     // rarity
-  image_link: String,  //image.normal
+  image_link: String,  //image_uris.normal
   user: { type: Schema.Types.ObjectId, ref: 'User' },
 }, {
   timestamps: false

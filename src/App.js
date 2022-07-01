@@ -7,7 +7,7 @@ import AuthPage from './pages/AuthPage/AuthPage';
 import Deckbox from './pages/Deckbox/Deckbox';
 import Deck from './pages/Decks/Deck';
 import { ThisDeck } from './pages/Decks/ThisDeck';
-import PrintChange from './components/PrintChange/PrintChange';
+import { PrintChange } from './components/PrintChange/PrintChange';
 
 class App extends Component {
   constructor() {
@@ -48,13 +48,13 @@ class App extends Component {
               <Route path='/home' element={<FrontPage />}/>
               <Route path='/cards' element={<Deckbox />}/>
               <Route path='/decks' element={<Deck />}/>              
-              {/* <Route path='*' element={<Navigate to='/home' replace />}/> */}
+              <Route path='*' element={<Navigate to='/home' replace />}/>
             </Routes>
             : 
             <Routes>
               <Route path='/home' element={<FrontPage />}/>
               <Route path='/authenticate' element={<AuthPage setUserInState={this.setUserInState} />}/>
-              <Route path='*' element={<Navigate to='/home' replace />} />
+              {/* <Route path='*' element={<Navigate to='/home' replace />} /> */}
             </Routes>             
           }
         </div>
