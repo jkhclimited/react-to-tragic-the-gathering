@@ -92,12 +92,14 @@ export const PrintChange = () => {
                 <div className='print-select-container'>
                     <div className="row table-headers">
                         <p className="flex table-header-left table-header-right table-header-bottom">Set Name</p>
+                        <p className="flex table-header-right table-header-bottom">Number</p>
                         <p className="flex table-header-right table-header-bottom">Select</p>
                     </div>
                     {state.prints.length ?
                         state.prints.map(printing => (
                             <div className='text-row'>
                                 <p className="flex" id={[printing.set_name, printing.collector_number]} ref={printVersion} onClick={displayUnder}>{printing.set_name}</p>
+                                <p className="flex">{printing.collector_number}</p>
                                 <p className="flex">
                                     <button id={[printing.set_name, printing.collector_number]} className="switch-button" type="submit" onClick={handleSwitchPrint}>Select Print</button>
                                 </p>

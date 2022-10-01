@@ -111,16 +111,21 @@ function updatePrint(req, res) {
     try {
         const cardCache = req.body.cardVer;
         const cardId = req.body.cardId;
+        console.log(cardId);
         // req.body.cardVer / cardName / cardId
         let query = { set: cardCache.set , collector_number: cardCache.collector_number, name: cardCache.name };
         Card.findOne(query, function(err, card){
-            console.log(card);
             if (card === null) {
                 Card.create(cardCache, function(err, card){
                     card.image_link = cardCache.image_uris.normal;
                     card.save();
                     User.findById(req.user._id).exec(function(err, user){
-                        user.cards.push({card: card, quantity: cardCache.quantity});
+                        let cards = user.cards;
+                        let thisCard = cards.filter(function(cardA){
+                            return cardA.card.toString() === cardId;
+                        });
+                        let quantity = thisCard[0].quantity;
+                        user.cards.push({card: card, quantity: quantity});
                         user.save();
                     });
                     User.updateOne({ _id: ObjectId(req.user._id) }, 
@@ -132,20 +137,26 @@ function updatePrint(req, res) {
                     );
                     console.log("Card version updated with new card.");
                 });
-            } else {
-                console.log("Card found");
+            } else { // Card was found
                 User.findById(req.user._id).exec(function(err, user){
-                    console.log()
-                    user.cards.push({card: card, quantity: cardCache.quantity});
+                    let cards = user.cards;
+                    let thisCard = cards.filter(function(cardA){
+                        return cardA.card.toString() === cardId;
+                    });
+                    let quantity = thisCard[0].quantity;
+                    user.cards.push({card: card, quantity: quantity});
+                    let newCardId = cards[cards.length - 1].card._id.toString()
+                    let checkForCard = cards.find(x => x.card.toString() === newCardId);
+                    let dupeIdx = cards.findIndex(y => y.card.toString() === newCardId);
+                    if (checkForCard !== undefined) {
+                        quantity += cards[dupeIdx].quantity;
+                        cards[dupeIdx].quantity = quantity;
+                        cards.pop();
+                    };
+                    let removeIdx = cards.findIndex(z => z.card.toString() === cardId);
+                    cards.splice(removeIdx, 1);
                     user.save();
                 });
-                User.updateOne({ _id: ObjectId(req.user._id) }, 
-                    { $pull: 
-                        { cards: { card: { _id: ObjectId(cardId)}}}
-                    }, function(err, user) {
-                        if (err !== null){ console.log(err); }
-                    }
-                );
                 console.log("Card version updated with existing card.");
             }
         })
