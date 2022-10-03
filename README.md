@@ -11,9 +11,10 @@ This app was created in order to track my extensive Magic the Gathering collecti
 1. "Copies owned" features in the Deckbox section
 2. The ability to require multiple copies in order to slot into multiple decks
 Note about 2: This is for scenarios where the user owns multiple decks and does not want to swap cards between decks on a regular basis (such as I)
-3. Redo the UI entirely as it is non-responsive and very clunky
+3. Redo the UI entirely as it is non-responsive and very clunky (In Progress)
 
 ### Recently Added Features and Fixes
 
 1. Fixed "Change Print" so that it no longer creates duplicates when the target version already exists. (Not Pushed to Heroku)
 2. Fixed "variable not found" error by making a change to asynchronous. (Not Pushed to Heroku)
+3. Major UI changes, less of a list look and more of a modern hover-to-get-info look. (Not Pushed to Heroku)
