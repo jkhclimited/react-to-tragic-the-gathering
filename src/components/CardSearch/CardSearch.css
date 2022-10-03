@@ -6,14 +6,24 @@
   }
   
   .block {
-    display:block;
+    display: block;
+  }
+
+  .center {
+    text-align: center;
   }
   
   .search-center-div {
     display: table;
-    width: 55%;
     margin: 0 auto;
-    position: relative;
+    position: static;
+  }
+
+  .button-group {
+    display: table;
+    margin: 0 auto;
+    position: static;
+    width: 394px;
   }
 
   .text-center {
@@ -29,22 +39,26 @@
     float: left;
     margin-right: 20px;
   }
-  
-  .search-group-button {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+
+  .search-button {
+    display: inline-block;
+    vertical-align: left;
+    width: 44%;
+    margin-right: 20px;
+    margin-top: 10px;
   }
 
   .add-button {
-    position: absolute;
-    bottom: 1;
-    right: 0;
+    display: inline-block;
+    vertical-align: left;
+    width: 44%;
+    margin-right: 20px;
+    margin-top: 10px;
   }
   
   .search-results {
     text-align: left;
     display: table;
-    width: 70%;
+    width: 400px;
     margin: 0 auto;
   }

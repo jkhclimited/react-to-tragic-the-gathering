@@ -144,7 +144,10 @@ function updatePrint(req, res) {
                         return cardA.card.toString() === cardId;
                     });
                     let quantity = thisCard[0].quantity;
+                    
+                    // The actual push into the array here
                     user.cards.push({card: card, quantity: quantity});
+
                     let newCardId = cards[cards.length - 1].card._id.toString()
                     let checkForCard = cards.find(x => x.card.toString() === newCardId);
                     let dupeIdx = cards.findIndex(y => y.card.toString() === newCardId);
