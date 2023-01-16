@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import CardSearch from "../../components/CardSearch/CardSearch";
 import '../Deckbox/Deckbox.css';
 
@@ -9,14 +8,18 @@ class Deckbox extends React.Component {
         cardID: "",
     };
 
-    displayHover = async (e, id) => {
+    displayUnder = async (e, id) => {
         e.preventDefault();
         await this.setState({cardID: e.currentTarget.id})
         let cardID = this.state.cardID;
         let card = (this.state.cards).find(i => i._id === cardID);
-        let thisCardDisplay = document.getElementById("hoverImage");
-        thisCardDisplay.innerHTML = `<img src=${card.card.image_link} alt="${card.card.name} from ${card.card.set_name}"></img><br /><p>Card Num: ${card.card.collector_number}<br />Type: ${card.card.type_line}<br />Foil: ${card.card.nonfoil ? "No" : "Yes"}</p>`;
-    }
+        let thisCard = document.getElementById(cardID);
+        if (thisCard.innerHTML === `${card.card.name}`) {
+            thisCard.innerHTML = `${card.card.name}<br/><img src=${card.card.image_link} alt="${card.card.name} from ${card.card.set_name}"></img>`;
+        } else {
+            thisCard.innerHTML = `${card.card.name}`;
+        }
+    };
 
     getCards = async () => {
         try {
@@ -28,6 +31,7 @@ class Deckbox extends React.Component {
                 }
             }).then(res => res.json());
             this.setState({ cards: cardList });
+            console.log(cardList);
         } catch (err) {
             console.error("Error:", err);
         }
@@ -91,23 +95,23 @@ class Deckbox extends React.Component {
 
     render() {
         return (
-            <div className='center-div'>                
+            <div className='center-div'>
                 <CardSearch addable={true} type={"deckbox"} getCards={this.getCards}/>
-                <div id="hoverImage" className="hoverCardImage">
-                    <img src="https://i.imgur.com/cI9uGt2.jpeg"></img><br />
-                </div>
                 <div className="container">
                     <div className="row table-headers">
-                        <p className="flex text-align-left table-header-left table-header-right table-header-bottom">Card Name</p>
-                        <p className="flex text-align-left table-header-right table-header-bottom">Quantity</p>
-                        <p className="flex text-align-left table-header-right table-header-bottom">Set</p>
-                        <p className="flex text-align-left table-header-right table-header-bottom">Change Version</p>
-                        <p className="flex text-align-left table-header-right table-header-bottom">Delete</p>
+                        <p className="flex table-header-left table-header-right table-header-bottom">Card Name</p>
+                        <p className="flex table-header-right table-header-bottom">Quantity</p>
+                        <p className="flex table-header-right table-header-bottom">Set</p>
+                        <p className="flex table-header-right table-header-bottom">Num</p>
+                        <p className="flex table-header-right table-header-bottom">Type</p>
+                        <p className="flex table-header-right table-header-bottom">Foil?</p>
+                        <p className="flex table-header-right table-header-bottom">Change Version</p>
+                        <p className="flex table-header-right table-header-bottom">Delete</p>
                     </div>
                     {this.state.cards.length ? 
                         this.state.cards.map(card => (
                             <div className="text-row">
-                                <p className="flex text-align-left" id={card._id} onMouseEnter={this.displayHover}>{card.card.name}</p>
+                                <p className="flex" id={card._id} onClick={this.displayUnder}>{card.card.name}</p>
                                 <select id={card._id} name="quantity" className="flex" value={card.quantity} onChange={this.handleQuantitySelect}>
                                     <option value='1'>1</option>
                                     <option value='2'>2</option>
@@ -130,9 +134,12 @@ class Deckbox extends React.Component {
                                     <option value='19'>19</option>
                                     <option value='20'>20</option>
                                 </select>                                    
-                                <p className="flex text-align-left">{card.card.set_name}</p>
-                                <Link to={`/cards/${card.card._id}`} id={card.card._id} className="changeVersion">Switch Version</Link>
-                                <p className="flex text-align-left">
+                                <p className="flex">{card.card.set_name}</p>
+                                <p className="flex">{card.card.collector_number}</p>
+                                <p className="flex">{card.card.type_line}</p>
+                                <p className="flex">{card.card.nonfoil ? "No" : "Yes"}</p>
+                                <a href={`/cards/${card._id}`} className='' id={card._id}>Switch Version</a>
+                                <p className="flex">
                                     <button id={card._id} className="delete-button" type="submit" onClick={this.handleDelete}>X</button>
                                 </p>
                             </div>

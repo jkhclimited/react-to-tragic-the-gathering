@@ -6,6 +6,7 @@ class FrontPage extends React.Component {
         return (
             <div className='center-div'>
                 <CardSearch />
+                <title>Tragic the Gathering - Home</title>
             </div>
         )
     }

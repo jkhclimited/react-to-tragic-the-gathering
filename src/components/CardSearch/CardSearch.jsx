@@ -63,7 +63,7 @@ class CardSearch extends React.Component {
                 })
             }
         } catch (err) {
-            console.error("Error: ", err);
+            console.error("Error:", err);
         }
     }
 
@@ -84,11 +84,11 @@ class CardSearch extends React.Component {
             )
         } else if (card.code) {
             return (
-                <p className="center">No card with that name has been found.</p>
+                <p>No card with that name has been found.</p>
             )
         } else {
             return (
-                <p className="center">Please search for a card.</p>
+                <p>Please search for a card.</p>
             )
         }
 
@@ -105,9 +105,9 @@ class CardSearch extends React.Component {
     render() {
         return (
             <div>
-                <h1 className="text-center">Tragic the Gathering</h1>
                 <div className="search-center-div">
                     <form action="/home" method="GET">
+                        <h1 className="text-center">Tragic the Gathering</h1>
                         <div className="search-group">
                             <label className="search-label" htmlFor="name">Card Name</label>
                             <input type="text" 
@@ -129,17 +129,14 @@ class CardSearch extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </div>
-                        <br />
-                        <div className="button-group">
-                            <div className="search-button">
-                                <button className="button" type="submit" onClick={this.handleSubmit}>Search</button>
-                            </div>
-                            { this.props.addable === true ?
-                            <div className="add-button">
-                                <button className="button" type="submit" onClick={this.handleAdd}>Add Card</button>
-                            </div>
-                            : "" }
-                        </div>                        
+                        <div className="search-group-button">
+                            <button className="button block" type="submit" onClick={this.handleSubmit}>Search</button>
+                        </div>
+                        { this.props.addable === true ?
+                        <div className="add-button">
+                            <button className="button block" type="submit" onClick={this.handleAdd}>Add Card</button>
+                        </div>
+                        : "" }
                     </form>
                 </div>
                 <div className="search-results">

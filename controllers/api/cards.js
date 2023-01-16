@@ -1,4 +1,3 @@
-const { queryByLabelText } = require('@testing-library/react');
 const Card = require('../../models/Card');
 const User = require('../../models/User');
 const ObjectId = require('mongodb').ObjectId;
@@ -7,14 +6,14 @@ module.exports = {
     index,
     create,
     delete: deleteOne,
-    update: updateQuantity,
+    update: updateOne,
     getOne,
-    updatePrint,
 }
 
 async function getOne(req, res) {
     try {
         let card = await Card.findById(req.params.id);
+        console.log(card);
         res.status(302).json(card);
     } catch (err) {
         res.status(400).json(err);
@@ -24,7 +23,6 @@ async function getOne(req, res) {
 async function index(req, res) {
     try {
         let cards = await User.findById(req.user._id).populate('cards.card').exec();
-        cards.cards.sort((a,b) => (a.card.name > b.card.name) ? 1 : ((b.card.name > a.card.name) ? -1 : 0));
         res.status(200).json(cards.cards);
     } catch (err) {
         console.log(err);
@@ -79,7 +77,9 @@ async function deleteOne(req, res) {
             { $pull: 
                 { cards: { _id: ObjectId(req.params.id) } }
             }, function(err, user) {
-                if (err !== null){ console.log(err); }
+                if (err !== null){
+                    console.log(err);
+                }
             }
         );
         res.sendStatus(200);
@@ -89,7 +89,7 @@ async function deleteOne(req, res) {
     }
 }
 
-function updateQuantity(req, res) {
+function updateOne(req, res) {
     try {
         User.findById(req.user._id).populate('cards.card').exec(function(err, user){
             user.cards.forEach(function(err, idx){
@@ -103,69 +103,6 @@ function updateQuantity(req, res) {
         })
         res.sendStatus(201);
     } catch (err) {
-        res.sendStatus(400);
-    }
-}
-
-function updatePrint(req, res) {
-    try {
-        const cardCache = req.body.cardVer;
-        const cardId = req.body.cardId;
-        console.log(cardId);
-        // req.body.cardVer / cardName / cardId
-        let query = { set: cardCache.set , collector_number: cardCache.collector_number, name: cardCache.name };
-        Card.findOne(query, function(err, card){
-            if (card === null) {
-                Card.create(cardCache, function(err, card){
-                    card.image_link = cardCache.image_uris.normal;
-                    card.save();
-                    User.findById(req.user._id).exec(function(err, user){
-                        let cards = user.cards;
-                        let thisCard = cards.filter(function(cardA){
-                            return cardA.card.toString() === cardId;
-                        });
-                        let quantity = thisCard[0].quantity;
-                        user.cards.push({card: card, quantity: quantity});
-                        user.save();
-                    });
-                    User.updateOne({ _id: ObjectId(req.user._id) }, 
-                        { $pull: 
-                            { cards: { card: { _id: ObjectId(cardId)}}}
-                        }, function(err, user) {
-                            if (err !== null){ console.log(err); }
-                        }
-                    );
-                    console.log("Card version updated with new card.");
-                });
-            } else { // Card was found
-                User.findById(req.user._id).exec(function(err, user){
-                    let cards = user.cards;
-                    let thisCard = cards.filter(function(cardA){
-                        return cardA.card.toString() === cardId;
-                    });
-                    let quantity = thisCard[0].quantity;
-                    
-                    // The actual push into the array here
-                    user.cards.push({card: card, quantity: quantity});
-
-                    let newCardId = cards[cards.length - 1].card._id.toString()
-                    let checkForCard = cards.find(x => x.card.toString() === newCardId);
-                    let dupeIdx = cards.findIndex(y => y.card.toString() === newCardId);
-                    if (checkForCard !== undefined) {
-                        quantity += cards[dupeIdx].quantity;
-                        cards[dupeIdx].quantity = quantity;
-                        cards.pop();
-                    };
-                    let removeIdx = cards.findIndex(z => z.card.toString() === cardId);
-                    cards.splice(removeIdx, 1);
-                    user.save();
-                });
-                console.log("Card version updated with existing card.");
-            }
-        })
-        res.sendStatus(200);
-    } catch (err) {
-        console.log(err);
         res.sendStatus(400);
     }
 }
