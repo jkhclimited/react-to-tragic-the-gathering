@@ -2,7 +2,7 @@
 
 Link first, explanations later.
 
-Click [this link](https://tragic-the-gathering.onrender.com/home) to open the deployed app on Heroku. 
+Click [this link](https://tragic-the-gathering.onrender.com) to open the deployed app on Heroku. 
 
 This app was created in order to track my extensive Magic the Gathering collection, as well as be able to create decklists and see which cards from the decklist that I already own. Upon gathering all of my non-bulk cards into one location, I realized that this was going to be a tragic ordeal, as there were literally thousands of cards...hence the name that was given to this app.
 
